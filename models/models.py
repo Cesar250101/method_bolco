@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from cgitb import text
+from dataclasses import replace
 from odoo import models, fields, api
 
 
@@ -23,10 +24,11 @@ class Facturas(models.Model):
     @api.model
     def create(self, values):
         texto=values['comment']
+        texto=texto.replace("'\n'",'')
         texto_cortado=''
         inicio=0
         fin=60
-        ciclos=int(len(texto)/fin)
+        ciclos=int(len(texto)/fin)+1
         if len(texto)>fin:
             for t in range(ciclos):
                 texto_cortado+=texto[inicio:fin]+'\n'

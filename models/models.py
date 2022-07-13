@@ -12,19 +12,18 @@ class Ordenes(models.Model):
 
 
 
-class Factura(models.Model):
+class Picking(models.Model):
     _inherit = 'stock.picking'
 
     notas_despacho = fields.Text(string='Nota Despacho',related='sale_id.notas_despacho')
 
-class Facturas(models.Model):
+class Factura(models.Model):
     _inherit = 'account.invoice'
 
     
     @api.model
     def create(self, values):
         texto=values['comment']
-        texto=texto.replace("'\n'",'')
         texto_cortado=''
         inicio=0
         fin=60
@@ -35,5 +34,5 @@ class Facturas(models.Model):
                 inicio=fin
                 fin+=60
         values['comment']=texto_cortado
-        return super(Facturas, self).create(values)
+        return super(Factura, self).create(values)
     

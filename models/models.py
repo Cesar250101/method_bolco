@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-
-from cgitb import text
-from dataclasses import replace
 from odoo import models, fields, api
-
 
 class Ordenes(models.Model):
     _inherit = 'sale.order'

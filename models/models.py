@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ast import Continue
 from odoo import models, fields, api
 
 class Ordenes(models.Model):
@@ -23,13 +24,19 @@ class Factura(models.Model):
         texto_cortado=''
         inicio=0
         fin=60
-        ciclos=int(len(texto)/fin)+1
-        if len(texto)>fin:
-            for t in range(ciclos):
-                texto_cortado+=texto[inicio:fin]+'\n'
-                inicio=fin
-                fin+=60
-        values['comment']=texto_cortado
+        try:
+            largo=len(texto)
+        except:
+            largo=0
+            pass
+        if largo>0:
+            ciclos=int(len(texto)/fin)+1
+            if len(texto)>fin:
+                for t in range(ciclos):
+                    texto_cortado+=texto[inicio:fin]+'\n'
+                    inicio=fin
+                    fin+=60
+            values['comment']=texto_cortado
         return super(Factura, self).create(values)
 
 

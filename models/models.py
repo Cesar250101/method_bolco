@@ -48,11 +48,12 @@ class Conciliacion(models.Model):
         conciliacion=super(Conciliacion, self).process_reconciliation(counterpart_aml_dicts, payment_aml_rec, new_aml_dicts)        
         payment_aml_rec.write({'statement_line_id': self.id})
         if payment_aml_rec:
-            # arma la sentencia SQL
-            qry = "UPDATE account_move_line SET statement_line_id = {} WHERE id ={}"
+            for p in payment_aml_rec:
+                # arma la sentencia SQL
+                qry = "UPDATE account_move_line SET statement_line_id = {} WHERE id ={}"
 
-            qry=qry.format(self.id,payment_aml_rec.id)
-            self.env.cr.execute(qry)        
+                qry=qry.format(self.id,p.id)
+                self.env.cr.execute(qry)        
             return payment_aml_rec
 
     @api.multi

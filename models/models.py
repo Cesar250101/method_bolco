@@ -59,9 +59,9 @@ class Conciliacion(models.Model):
     @api.multi
     def button_cancel_reconciliation(self):
         conciliacion=super(Conciliacion, self).button_cancel_reconciliation()        
-        qry = "UPDATE account_move_line SET statement_line_id = null WHERE id ={}"
-
-        qry=qry.format(self.journal_entry_ids.id)
-        self.env.cr.execute(qry)        
+        for c in self.journal_entry_ids:
+            qry = "UPDATE account_move_line SET statement_line_id = null WHERE id ={}"            
+            qry=qry.format(c.id)
+            self.env.cr.execute(qry)        
         return True
 

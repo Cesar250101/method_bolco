@@ -20,11 +20,11 @@ class Factura(models.Model):
     
     @api.model
     def create(self, values):
-        texto=values['comment']
         texto_cortado=''
         inicio=0
         fin=60
         try:
+            texto=values['comment']
             largo=len(texto)
         except:
             largo=0
@@ -46,8 +46,8 @@ class Conciliacion(models.Model):
 
     def process_reconciliation(self, counterpart_aml_dicts=None, payment_aml_rec=None, new_aml_dicts=None):
         conciliacion=super(Conciliacion, self).process_reconciliation(counterpart_aml_dicts, payment_aml_rec, new_aml_dicts)        
-        payment_aml_rec.write({'statement_line_id': self.id})
         if payment_aml_rec:
+            payment_aml_rec.write({'statement_line_id': self.id})
             for p in payment_aml_rec:
                 # arma la sentencia SQL
                 qry = "UPDATE account_move_line SET statement_line_id = {} WHERE id ={}"
